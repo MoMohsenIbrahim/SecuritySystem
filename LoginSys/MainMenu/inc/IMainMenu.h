@@ -8,11 +8,9 @@
 class IMainMenu
 {
     public:
-        virtual void addChoice(std::string menuOption) = 0;
         virtual void removeChoice(std::string menuOption) = 0;
-        virtual void removeChoice(uint8_t menuOptionID) = 0;
         virtual void removeAllChoices() = 0;
-        virtual void displayMainMenu() = 0;
+        virtual void mainMenuSelectMenu()  = 0;
         virtual void mainMenuTest() = 0;
 };
 

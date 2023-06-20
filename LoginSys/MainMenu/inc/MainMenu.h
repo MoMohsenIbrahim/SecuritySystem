@@ -9,14 +9,14 @@ class MainMenu : public IMainMenu
     public:
         MainMenu();
         ~MainMenu() = default;
-        void addChoice(std::string menuOption) override;
+        template <typename InsertPolicy>
+        void insertMenu(std::string menuOption, InsertPolicy *menuClassPtr);
         void removeChoice(std::string menuOption) override;
-        void removeChoice(uint8_t menuOptionID) override;
         void removeAllChoices() override;
-        void displayMainMenu() override;
+        void mainMenuSelectMenu() override;
         void mainMenuTest() override;
     private:
-        std::map<uint8_t ,std::string> m_mainMenuOptions;
+        std::map<std::string, void *> m_mainMenuScreens; 
         uint8_t m_mainMenuOptionID;
 };
 

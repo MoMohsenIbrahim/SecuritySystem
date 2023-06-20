@@ -1,60 +1,53 @@
 #include <iostream>
 #include "../inc/MainMenu.h"
+#include "../inc/InsertMenuPolicy.h"
 
 MainMenu::MainMenu() : m_mainMenuOptionID(0)
 {
 
 }
 
-void MainMenu::addChoice(std::string menuOption)
+template <typename InsertPolicy>
+void MainMenu::insertMenu(std::string menuOption, InsertPolicy *menuClassPtr)
 {
-    m_mainMenuOptions.insert({++m_mainMenuOptionID, menuOption});
+    m_mainMenuScreens.insert({menuOption, menuClassPtr});
+    m_mainMenuOptionID++;
 }
 
 void MainMenu::removeChoice(std::string menuOption)
 {
-    for(auto it = m_mainMenuOptions.begin(); it != m_mainMenuOptions.end(); it++)
+    for(auto it = m_mainMenuScreens.begin(); it != m_mainMenuScreens.end(); it++)
     {
-        if((it->second) == menuOption)
+        if((it->first) == menuOption)
         {
-           m_mainMenuOptions.erase(it);
+           m_mainMenuScreens.erase(it);
            m_mainMenuOptionID--;
         }
     }
 }
 
-void MainMenu::removeChoice(uint8_t menuOptionID)
-{
-  if(m_mainMenuOptions.end() != m_mainMenuOptions.find(menuOptionID))
-  {
-    m_mainMenuOptions.erase(menuOptionID);
-    m_mainMenuOptionID--;
-  }
-}
-
 void MainMenu::removeAllChoices()
 {
-    m_mainMenuOptions.clear();
+    m_mainMenuScreens.clear();
     m_mainMenuOptionID = 0;
 }
 
-void MainMenu::displayMainMenu()
+void MainMenu::mainMenuSelectMenu()
 {
-    for(auto mainMenuElement : m_mainMenuOptions)
-    {
-        std::cout << static_cast<short>(mainMenuElement.first) << "- " << mainMenuElement.second << std::endl; 
-    }
+    uint16_t menuSelectedChoice;
+    std::cin >> menuSelectedChoice;
+    
 }
 
 void MainMenu::mainMenuTest()
 {
-    addChoice("Regsiter");
-    addChoice("Login");
-    addChoice("Change PW");
-    addChoice("Close");
-    addChoice("FirstRedundent");
-    addChoice("SecondRedundent");
-    removeChoice(5);
+    InsertMenuPolicy<MainMenu> obj;
+    obj.insertMenu("Regsiter", this);
+    obj.insertMenu("Login", this);
+    obj.insertMenu("Change PW", this);
+    obj.insertMenu("Close", this);
+    obj.insertMenu("FirstRedundent", this);
+    obj.insertMenu("SecondRedundent", this);
     removeChoice("SecondRedundent");
-    displayMainMenu();
+    obj.displayMenus();
 }
